@@ -23,8 +23,7 @@ class BankAccount {
 // Create an object to manage bank accounts
 const bankAccounts = {};
 function createAccount() {
-    inquirer
-        .prompt([
+    inquirer.prompt([
         {
             type: 'input',
             name: 'accountNumber',
@@ -45,52 +44,46 @@ function createAccount() {
 }
 function performTransaction(accountNumber) {
     const choices = ['Deposit', 'Withdraw', 'Check Balance', 'Back'];
-    inquirer
-        .prompt([
+    inquirer.prompt([
         {
             type: 'list',
             name: 'action',
             message: 'Choose an action:',
             choices: choices,
         },
-    ])
-        .then((answers) => {
+    ]).then((answers) => {
         switch (answers.action) {
             case 'Deposit':
-                inquirer
-                    .prompt([
+                inquirer.prompt([
                     {
                         type: 'input',
                         name: 'amount',
                         message: 'Enter the deposit amount:',
                         validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                     },
-                ])
-                    .then((depositAnswer) => {
+                ]).then((depositAnswer) => {
                     const amount = parseFloat(depositAnswer.amount);
                     bankAccounts[accountNumber].deposit(amount);
-                    console.log(`Deposited $${amount}`);
+                    console.log(`Deposited Rs${amount}`);
                     performTransaction(accountNumber);
                 });
                 break;
             case 'Withdraw':
-                inquirer
-                    .prompt([
+                inquirer.prompt([
                     {
                         type: 'input',
                         name: 'amount',
                         message: 'Enter the withdrawal amount:',
                         validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                     },
-                ])
-                    .then((withdrawAnswer) => {
+                ]).then((withdrawAnswer) => {
                     const amount = parseFloat(withdrawAnswer.amount);
                     bankAccounts[accountNumber].withdraw(amount);
                     performTransaction(accountNumber);
                 });
                 break;
             case 'Check Balance':
-                console.log(`Balance: $${bankAccounts[accountNumber].getBalance()}`);
+                console.log(`Balance: Rs${bankAccounts[accountNumber].getBalance()}`);
                 performTransaction(accountNumber);
                 break;
             case 'Back':
@@ -109,15 +102,13 @@ function mainMenu() {
             message: 'Choose an action:',
             choices: choices,
         },
-    ])
-        .then((answers) => {
+    ]).then((answers) => {
         switch (answers.action) {
             case 'Create Account':
                 createAccount();
                 break;
             case 'Perform Transaction':
-                inquirer
-                    .prompt([
+                inquirer.prompt([
                     {
                         type: 'input',
                         name: 'accountNumber',
